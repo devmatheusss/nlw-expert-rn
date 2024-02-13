@@ -1,5 +1,4 @@
-import { Slot } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Slot, Stack } from "expo-router";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -9,6 +8,8 @@ import {
 } from '@expo-google-fonts/inter'
 
 import { Loading } from "@/components/loading";
+import { SafeAreaView } from "react-native";
+import colors from "tailwindcss/colors";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -23,8 +24,27 @@ export default function Layout() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-900">
-      <Slot />
-    </SafeAreaView>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: colors.slate[900]
+        },
+        animation: "ios"
+      }}
+    >
+      <Stack.Screen
+        name="index"
+      />
+      <Stack.Screen
+        name="product/[id]"
+      />
+    </Stack>
   )
+
+  // return (
+  //   <SafeAreaView className="flex-1 bg-slate-900">
+  //     <Slot />
+  //   </SafeAreaView>
+  // )
 }
