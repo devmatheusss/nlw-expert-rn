@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "nlw-expert-rn",
-    "slug": "nlw-expert-rn",
+    "name": "Expert FastFood",
+    "slug": "expert-fastfood",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "expert-fastfood",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0F172A"
-      }
+      },
+      "package": "com.matheusma678.expertfastfood"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "afffccff-d05a-4af2-a129-a0a63cfa62b6"
+      }
     }
   }
 }

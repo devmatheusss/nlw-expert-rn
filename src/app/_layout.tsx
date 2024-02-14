@@ -33,12 +33,9 @@ export default function Layout() {
         animation: "ios"
       }}
     >
-      <Stack.Screen
-        name="index"
-      />
-      <Stack.Screen
-        name="product/[id]"
-      />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="product/[id]" />
+      <Stack.Screen name="cart" />
     </Stack>
   )
 

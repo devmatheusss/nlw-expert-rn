@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
-import { FlatList, SectionList, Text, View } from 'react-native'
+import { FlatList, SafeAreaView, SectionList, Text, View } from 'react-native'
 
-import { CATEGORIES, MENU } from '@/utils/data/products'
+import { CATEGORIES, MENU, ProductProps } from '@/utils/data/products'
 
 import { Header } from '@/components/header'
 import { CategoryButton } from '@/components/category-button'
@@ -13,7 +13,7 @@ export default function Home() {
   const cartStore = useCartStore()
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0])
 
-  const sectionListRef = useRef<SectionList>(null)
+  const sectionListRef = useRef<SectionList<ProductProps>>(null)
 
   const cartQuantityItems = cartStore.products.reduce((total, product) => total + product.quantity, 0)
 
@@ -32,8 +32,10 @@ export default function Home() {
   }
 
   return (
-    <View className='flex-1'>
-      <Header title="Faça seu pedido" cartQuantityItems={cartQuantityItems} />
+    <SafeAreaView className='flex-1'>
+      <Header title="Faça seu pedido">
+        <Header.CartButton cartQuantityItems={cartQuantityItems} />
+      </Header>
 
       <FlatList
         data={CATEGORIES}
@@ -76,6 +78,6 @@ export default function Home() {
         className="flex-1 p-5"
         contentContainerStyle={{ paddingBottom: 100 }}
       />
-    </View>
+    </SafeAreaView>
   )
 }
