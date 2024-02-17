@@ -10,8 +10,10 @@ import { Product } from "@/components/product";
 import { Button } from "@/components/button";
 import { Feather } from "@expo/vector-icons";
 import { LinkButton } from "@/components/link-button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigation } from "expo-router";
+import { registerForPushNotificationsAsync, schedulePushNotification } from "@/lib/notifications";
+import * as Notifications from 'expo-notifications'
 
 const PHONE_NUMBER = "5513996543958"
 
@@ -19,6 +21,11 @@ export default function Cart() {
   const [address, setAddress] = useState("")
   const cartStore = useCartStore()
   const navigation = useNavigation()
+
+  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
 
   const total = formatCurrency(cartStore.products.reduce((total, product) => total + product.price * product.quantity, 0))
 
@@ -34,7 +41,7 @@ export default function Cart() {
     ])
   }
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     if (address.trim().length === 0) {
       return Alert.alert("Pedido", "Informe os dados da entrega.")
     }
@@ -54,9 +61,27 @@ export default function Cart() {
 
     Linking.openURL(`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${message}`)
     
+    await schedulePushNotification()
     cartStore.clear()
     navigation.goBack()
   }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(!!notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current!);
+      Notifications.removeNotificationSubscription(responseListener.current!);
+    };
+  }, []);
 
   return (
     <View className="flex-1">
